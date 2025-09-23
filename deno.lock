@@ -1,0 +1,24 @@
+{
+  "version": "5",
+  "specifiers": {
+    "npm:@datastructures-js/priority-queue@^6.3.4": "6.3.4"
+  },
+  "npm": {
+    "@datastructures-js/heap@4.3.5": {
+      "integrity": "sha512-zgO8KO26WnZdCxe72Ck+55mhUYmw/1CL/TueKSIIU6aqoOcXAqeaL2kRldJcXtCdJ43rqgIKYdEkiL07sQ+2VQ=="
+    },
+    "@datastructures-js/priority-queue@6.3.4": {
+      "integrity": "sha512-m8Jt1OkwyHsKRz6L1FWerz3Hw8iU5vqCdBI6khC8YNssF1kXKX6cs8Xc9Zt9ocPCxO/vZhAu/KnQ+uQ4Btw6AA==",
+      "dependencies": [
+        "@datastructures-js/heap"
+      ]
+    }
+  },
+  "workspace": {
+    "packageJson": {
+      "dependencies": [
+        "npm:@datastructures-js/priority-queue@^6.3.4"
+      ]
+    }
+  }
+}
