@@ -1,3 +1,5 @@
+// https://leetcode.com/problems/fraction-to-recurring-decimal/
+
 // @leet start
 function fractionToDecimal(numerator: number, denominator: number): string {
   if (numerator === 0) return "0";
