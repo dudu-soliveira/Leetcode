@@ -1,70 +1,45 @@
 // https://leetcode.com/problems/maximum-frequency-of-an-element-after-performing-operations-i/
 
 // @leet start
+function sort(a: number[], b: number[]): number {
+  return a[0] - b[0] || b[1] - a[1];
+}
+
 function maxFrequency(
   nums: number[],
   k: number,
   numOperations: number,
 ): number {
-  nums.sort((a, b) => a - b);
-
+  let map = new Map<number, number>();
   let ans = 0;
-  const numCount: Map<number, number> = new Map();
+  let acc = 0;
 
-  let lastNumIndex = 0;
-  for (let i = 0; i < nums.length; i++) {
-    if (nums[i] !== nums[lastNumIndex]) {
-      numCount.set(nums[lastNumIndex], i - lastNumIndex);
-      ans = Math.max(ans, i - lastNumIndex);
-      lastNumIndex = i;
-    }
+  for (let i = 0; i < nums.length; i++)
+    map.set(nums[i], (map.get(nums[i]) ?? 0) + 1);
+
+  let heap: number[][] = [];
+
+  let freq = map.entries();
+
+  for (const [num, count] of freq) {
+    heap.push([num - k, count]);
+    heap.push([num, 0]);
+    heap.push([num + k, -count]);
   }
 
-  numCount.set(nums[lastNumIndex], nums.length - lastNumIndex);
-  ans = Math.max(ans, nums.length - lastNumIndex);
+  heap.sort(sort);
 
-  const leftBound = (value: number) => {
-    let left = 0;
-    let right = nums.length - 1;
-    while (left < right) {
-      const mid = Math.floor((left + right) / 2);
-      if (nums[mid] < value) {
-        left = mid + 1;
-      } else {
-        right = mid;
-      }
-    }
-    return left;
-  };
+  for (let i = 0; i < heap.length; i++) {
+    acc += heap[i][1];
 
-  const rightBound = (value: number) => {
-    let left = 0;
-    let right = nums.length - 1;
-    while (left < right) {
-      const mid = Math.floor((left + right + 1) / 2);
-      if (nums[mid] > value) {
-        right = mid - 1;
-      } else {
-        left = mid;
-      }
-    }
-    return left;
-  };
-
-  for (let i = nums.at(0)!; i <= nums.at(-1)!; i++) {
-    const [l, r] = [leftBound(i - k), rightBound(i + k)];
-
-    let tempAns;
-
-    if (numCount.has(i)) {
-      tempAns = Math.min(r - l + 1, numCount.get(i)! + numOperations);
-    } else {
-      tempAns = Math.min(r - l + 1, numOperations);
-    }
-
-    ans = Math.max(ans, tempAns);
+    if (acc > ans)
+      ans = Math.max(
+        ans,
+        Math.min(acc, numOperations + (map.get(heap[i][0]) ?? 0)),
+      );
   }
 
   return ans;
 }
 // @leet end
+
